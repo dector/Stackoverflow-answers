@@ -46,7 +46,7 @@ public class Test {
 
 		List<String> newList = Shaker.shake(originalList);
 
-		System.out.println("Original List: " + originalList);
+		System.out.println("Original list: " + originalList);
 		System.out.println("Shaked list: " + newList);
 	}
 }
