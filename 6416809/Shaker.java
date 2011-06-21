@@ -33,6 +33,7 @@
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Shaker {
@@ -40,7 +41,7 @@ public class Shaker {
 		Random random = new Random();
 
 		// We'll use cloned original list
-		List<String> itemsList = new ArrayList<String>(sourceList);
+		LinkedList<String> itemsList = new LinkedList<String>(sourceList);
 
 		// Count how much items need shaking
 		int itemsToMerge = itemsList.size();
@@ -49,28 +50,24 @@ public class Shaker {
 		List<String> newList = new ArrayList<String>();
 
 		// Temporary values, used in cycle
-		String insertValue;
-		int selectedItemIndex;
-		int currentItemIndex;
+		int firstGroupItemIndex = 0;
 
 		while (0 < itemsToMerge) {
-			// Select random value from source list
-			selectedItemIndex = random.nextInt(itemsToMerge);
-			insertValue = itemsList.remove(selectedItemIndex);
+			// Select random number of merged items
+			int groupLength = random.nextInt(itemsToMerge) + 1;
 
-			// Select random mergin position
-			currentItemIndex = random.nextInt(itemsToMerge + 1);
-			
-			// IF random position in new list is empty
-			if (newList.size() - 1 < currentItemIndex) {
-				//   THEN just add item
-				newList.add(insertValue);
-			} else {
-				//   ELSE merge new item to existing value
-				newList.add(currentItemIndex, newList.remove(currentItemIndex) + insertValue);
+			// Create inserted string value
+			StringBuilder insertedValue = new StringBuilder();
+			int lastGroupItemIndex = firstGroupItemIndex + groupLength;
+			for (int i = firstGroupItemIndex; i < lastGroupItemIndex; i++) {
+				insertedValue.append(itemsList.removeFirst());
 			}
 
-			itemsToMerge--;
+			// Add merged string value
+			newList.add(insertedValue.toString());
+			firstGroupItemIndex = lastGroupItemIndex;
+
+			itemsToMerge -= groupLength;
 		}
 
 		return newList;
